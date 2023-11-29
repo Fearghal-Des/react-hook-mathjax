@@ -1,26 +1,59 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Markdown from 'react-markdown';
+import { Components } from 'react-markdown';
+// import RemarkMathPlugin from 'remark-math';
+import remarkMath from 'remark-math';
+import MathJaxProvider from './mathjax-provider';
+import rehypeKatex from 'rehype-katex'
+import 'katex/dist/katex.min.css'
+import MathJaxNode from './mathjax-node';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface MarkdownRenderProps {
+    children: string;
 }
 
-export default App;
+// Extending the Components type
+interface CustomComponents extends Partial<Components> {
+    math: React.ComponentType<{ value: string }>;
+    inlineMath: React.ComponentType<{ value: string }>;
+}
+
+const MarkdownRender: React.FC<MarkdownRenderProps> = ({ children }) => {
+    const components: CustomComponents = {
+        math: ({ value }) => <h1 style={{color: "blue"}}>{value}</h1>,
+        inlineMath: ({ value }) => <h1 style={{color: "blue"}}>{value}</h1>
+    };
+
+    return (
+        <MathJaxProvider>
+            <Markdown
+                remarkPlugins={[remarkMath]}
+
+                components={components}
+                rehypePlugins={[rehypeKatex]}
+               
+
+            >
+                {children}
+            </Markdown>
+        </MathJaxProvider>
+    );
+};
+
+// export default MarkdownRender;
+
+export default function App() {
+  const tex = `
+  # Lift($$L$$) can be determined by Lift Coefficient ($$C_L$$) like the following
+  equation.
+
+  $$
+  L = \\frac{1}{2} \\rho v^2 S C_L
+  $$`;
+
+  return (
+      <div className="App">
+          <MarkdownRender>{tex}</MarkdownRender>
+      </div>
+  );
+}
