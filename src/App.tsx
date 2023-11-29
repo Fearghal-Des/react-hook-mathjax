@@ -1,7 +1,6 @@
 import React from 'react';
 import Markdown from 'react-markdown';
 import { Components } from 'react-markdown';
-// import RemarkMathPlugin from 'remark-math';
 import remarkMath from 'remark-math';
 import MathJaxProvider from './mathjax-provider';
 import rehypeKatex from 'rehype-katex'
@@ -12,7 +11,6 @@ interface MarkdownRenderProps {
     children: string;
 }
 
-// Extending the Components type
 interface CustomComponents extends Partial<Components> {
     math: React.ComponentType<{ value: string }>;
     inlineMath: React.ComponentType<{ value: string }>;
@@ -39,8 +37,6 @@ const MarkdownRender: React.FC<MarkdownRenderProps> = ({ children }) => {
         </MathJaxProvider>
     );
 };
-
-// export default MarkdownRender;
 
 export default function App() {
   const tex = `

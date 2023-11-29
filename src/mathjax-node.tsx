@@ -11,7 +11,6 @@ function MathJaxNode({ formula, inline = false } : MathJaxNodeProps){
     const nodeRef = useRef(null);
 
     useEffect(() => {
-        console.log("effect running", { MathJax, nodeRef })
         if (MathJax && nodeRef.current) {
             MathJax.Hub.Queue(() => {
                 const jax = MathJax.Hub.getAllJax(nodeRef.current);
